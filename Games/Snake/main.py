@@ -14,6 +14,7 @@ FPS = 10
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+GREEN = (67, 125, 56)
 
 # Node class for linked list
 class Node:
@@ -67,7 +68,7 @@ class Snake:
 
     def hit_wall(self):
         x, y = self.get_head_position()
-        return x < 0 or x >= WIDTH or y < 0 or y >= HEIGHT
+        return 580 <= x <= 600 or 0 == x <= 1 or 380 <= y <= 400 or 0 == y <= 1
 
     def hit_self(self):
         current_node = self.head.next
@@ -79,18 +80,28 @@ class Snake:
 
 # Game loop functions
 def draw_grid(surface):
-    surface.fill(BLACK)
+    surface.fill(GREEN)
+    # Draw green checkerboard background
+    for row in range(0, HEIGHT, GRID_SIZE):
+        for col in range(0, WIDTH, GRID_SIZE):
+            if (row // GRID_SIZE + col // GRID_SIZE) % 2 == 0:
+                pygame.draw.rect(surface, (100, 128, 0), (col, row, GRID_SIZE, GRID_SIZE))
+    # Draw one-tile black perimeter
+    pygame.draw.rect(surface, BLACK, (0, 0, WIDTH, GRID_SIZE))
+    pygame.draw.rect(surface, BLACK, (0, HEIGHT - GRID_SIZE, WIDTH, GRID_SIZE))
+    pygame.draw.rect(surface, BLACK, (0, 0, GRID_SIZE, HEIGHT))
+    pygame.draw.rect(surface, BLACK, (WIDTH - GRID_SIZE, 0, GRID_SIZE, HEIGHT))
 
 def check_collision(snake, fruit):
     return snake.get_head_position() == fruit
 
 def run_game():
+
     pygame.display.set_caption("Snake Game")
     clock = pygame.time.Clock()
     surface = pygame.display.set_mode((WIDTH, HEIGHT))
     snake = Snake()
-    fruit = (random.randint(0, (WIDTH // GRID_SIZE) - 1) * GRID_SIZE,
-             random.randint(0, (HEIGHT // GRID_SIZE) - 1) * GRID_SIZE)
+    fruit = generate_fruit_position()
 
     while True:
         for event in pygame.event.get():
@@ -114,7 +125,7 @@ def run_game():
             fruit = (random.randint(0, (WIDTH // GRID_SIZE) - 1) * GRID_SIZE,
                      random.randint(0, (HEIGHT // GRID_SIZE) - 1) * GRID_SIZE)
 
-        if snake.hit_wall() or snake.hit_self():
+        if snake.hit_self() or snake.hit_wall():
             print("Game Over! Your score:", snake.length - 1)
             pygame.quit()
             sys.exit()
@@ -126,6 +137,27 @@ def run_game():
         pygame.display.flip()
         clock.tick(FPS)
 
+def generate_fruit_position():
+    # Generate a random position for the fruit that avoids the black border
+    x = random.randint(4, (WIDTH // GRID_SIZE) - 4) * GRID_SIZE
+    y = random.randint(4, (HEIGHT // GRID_SIZE) - 4) * GRID_SIZE
+    print(x, y)
+
+
+    if y >= 140:
+        y = 100
+        print(f"New Value: {y}")
+
+    
+    if x <= 120:
+        x = 100 
+    
+    if x >= 240:
+        x = 100 
+
+
+    return x, y
+
 # Directional constants
 UP = (0, -1)
 DOWN = (0, 1)
@@ -134,4 +166,3 @@ RIGHT = (1, 0)
 
 if __name__ == "__main__":
     run_game()
-
