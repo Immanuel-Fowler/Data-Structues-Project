@@ -4,6 +4,9 @@ import sys
 import subprocess
 from GameLinkedList import Games
 
+bg = pygame.image.load("Assets/background-project.jpeg")
+
+
 # main menu, snake, blank, another blank
 game_states = [True,False,False,False]
 
@@ -13,6 +16,7 @@ left_arrow_img = pygame.image.load('Assets/left_arrow.png')
 pygame.init()
 
 WIDTH, HEIGHT = 800, 600
+bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
 MENU_TITLE_FONT = pygame.font.Font(None, 80)
 MENU_OPTION_FONT = pygame.font.Font(None, 40)
 WHITE = (255, 255, 255)
@@ -32,6 +36,9 @@ def display_text(text, font, size, color, x, y):
 def game_menu():
     while True:
         screen.fill(BLACK)
+        
+
+        screen.blit(bg, (0, 0))
 
         thumbnail = pygame.image.load(Games.head.data[1])
         thumbnail = pygame.transform.scale(thumbnail, (100, 100))
@@ -88,5 +95,4 @@ def main():
     
 if __name__ == "__main__":
     main()
-
 
