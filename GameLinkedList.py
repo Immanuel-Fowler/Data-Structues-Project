@@ -64,4 +64,4 @@ directory = os.getcwd()+'/Games'
 for item in os.listdir(directory):
     item_path = os.path.join(directory, item)
     if os.path.isdir(item_path):
-        Games.append([item_path.split("/")[len(item_path.split("/"))-1], item_path + "/thumbnail.png", item_path + "/Main.py"])
+        Games.append([item_path.split("/")[len(item_path.split("/"))-1], item_path + "/thumbnail.png", item_path + "/main.py"])
