@@ -33,9 +33,9 @@ high_score = 0
 pass_pipe = False
 
 # load images
-bg = pygame.image.load('Games/FlappyHornet/bg.png')
-ground_img = pygame.image.load('Games/FlappyHornet/ground.png')
-button_img = pygame.image.load('Games/FlappyHornet/restart.png')
+bg = pygame.image.load('bg.png')
+ground_img = pygame.image.load('ground.png')
+button_img = pygame.image.load('restart.png')
 
 
 def draw_text(text, font, text_col, x, y):
@@ -51,14 +51,14 @@ def reset_game():
     return score
 
 
-class Bird(pygame.sprite.Sprite):
+class Hornet(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
         self.index = 0
         self.counter = 0
         for num in range(1, 4):
-            img = pygame.image.load(f'Games/FlappyHornet/hornet{num}.png')
+            img = pygame.image.load(f'hornet{num}.png')
             self.images.append(img)
         self.image = self.images[self.index]
         self.rect = self.image.get_rect()
@@ -94,7 +94,7 @@ class Bird(pygame.sprite.Sprite):
                     self.index = 0
             self.image = self.images[self.index]
 
-            # rotate the bird
+            # rotate the Hornet
             self.image = pygame.transform.rotate(self.images[self.index], self.vel * -2)
         else:
             self.image = pygame.transform.rotate(self.images[self.index], -90)
@@ -103,7 +103,7 @@ class Bird(pygame.sprite.Sprite):
 class Pipe(pygame.sprite.Sprite):
     def __init__(self, x, y, position):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Games/FlappyHornet/pipe.png')
+        self.image = pygame.image.load('pipe.png')
         self.rect = self.image.get_rect()
         # position 1 is from the top, -1 is from the bottom
         if position == 1:
@@ -173,11 +173,11 @@ class LinkedList:
             current = current.next
 
 
-bird_group = pygame.sprite.Group()
+hornet_group = pygame.sprite.Group()
 pipe_group = pygame.sprite.Group()
 
-flappy = Bird(100, int(screen_height / 2))
-bird_group.add(flappy)
+flappy = Hornet(100, int(screen_height / 2))
+hornet_group.add(flappy)
 
 # create restart button instance
 button = Button(screen_width // 2 - 50, screen_height // 2 - 100, button_img)
@@ -189,8 +189,8 @@ run = True
 while run:
     clock.tick(fps)
     screen.blit(bg, (0, 0))
-    bird_group.draw(screen)
-    bird_group.update()
+    hornet_group.draw(screen)
+    hornet_group.update()
     pipe_group.draw(screen)
     screen.blit(ground_img, (ground_scroll, 768))
 
@@ -198,12 +198,12 @@ while run:
     pipes_list.traverse()
 
     if len(pipe_group) > 0:
-        if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.left \
-                and bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right \
+        if hornet_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.left \
+                and hornet_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right \
                 and pass_pipe == False:
             pass_pipe = True
         if pass_pipe == True:
-            if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
+            if hornet_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.right:
                 score += 1
                 pass_pipe = False
 
@@ -216,7 +216,7 @@ while run:
     draw_text(str(high_score), font, white, int(screen_width - 70), 30)
 
 
-    if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy.rect.top < 0:
+    if pygame.sprite.groupcollide(hornet_group, pipe_group, False, False) or flappy.rect.top < 0:
         game_over = True
 
     if flappy.rect.bottom >= 768:
@@ -255,4 +255,3 @@ while run:
     pygame.display.update()
 
 pygame.quit()
-
