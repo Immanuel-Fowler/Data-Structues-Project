@@ -10,13 +10,20 @@ bg = pygame.image.load("Assets/background-project.jpeg")
 # main menu, snake, blank, another blank
 game_states = [True,False,False,False]
 
-right_arrow_img = pygame.image.load('Assets/right_arrow.png')
-left_arrow_img = pygame.image.load('Assets/left_arrow.png')
+right_arrow_img = pygame.image.load('Assets/arrow.png')
+
+left_arrow_img = pygame.image.load('Assets/arrow.png')
+left_arrow_img = pygame.transform.flip(left_arrow_img, True, False)
 
 pygame.init()
 
 WIDTH, HEIGHT = 800, 600
+
 bg = pygame.transform.scale(bg, (WIDTH, HEIGHT))
+
+right_arrow_img = pygame.transform.scale(right_arrow_img, (50,50))
+left_arrow_img = pygame.transform.scale(left_arrow_img, (50,50))
+
 MENU_TITLE_FONT = pygame.font.Font(None, 80)
 MENU_OPTION_FONT = pygame.font.Font(None, 40)
 WHITE = (255, 255, 255)
@@ -36,6 +43,12 @@ def display_text(text, font, size, color, x, y):
 def game_menu():
     while True:
         screen.fill(BLACK)
+
+        left_arrow = pygame.Rect(100, HEIGHT // 2, 50, 50)
+        pygame.draw.rect(screen,(255,0,0),left_arrow)
+
+        right_arrow = pygame.Rect(WIDTH-100, HEIGHT // 2, 50, 50)
+        pygame.draw.rect(screen,(0,0,255),right_arrow)
         
 
         screen.blit(bg, (0, 0))
@@ -55,12 +68,12 @@ def game_menu():
         screen.blit(pygame.image.load('Assets/left_arrow.png'),(WIDTH, HEIGHT // 4))'''
 
         # Display arrows for scrolling through games
-        left_arrow = pygame.Rect(100, HEIGHT // 2, 50, 50)
-        pygame.draw.rect(screen,(255,0,0),left_arrow)
+        
+        screen.blit(left_arrow_img,(100, HEIGHT // 2))
         
 
-        right_arrow = pygame.Rect(WIDTH-100, HEIGHT // 2, 50, 50)
-        pygame.draw.rect(screen,(0,0,255),right_arrow)
+        
+        screen.blit(right_arrow_img,(WIDTH-100, HEIGHT // 2))
         
 
         pygame.display.flip()
