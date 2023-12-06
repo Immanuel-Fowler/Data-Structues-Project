@@ -122,8 +122,7 @@ def run_game():
 
         if check_collision(snake, fruit):
             snake.length += 1
-            fruit = (random.randint(0, (WIDTH // GRID_SIZE) - 1) * GRID_SIZE,
-                     random.randint(0, (HEIGHT // GRID_SIZE) - 1) * GRID_SIZE)
+            fruit = generate_fruit_position()
 
         if snake.hit_self() or snake.hit_wall():
             print("Game Over! Your score:", snake.length - 1)
@@ -142,20 +141,6 @@ def generate_fruit_position():
     x = random.randint(4, (WIDTH // GRID_SIZE) - 4) * GRID_SIZE
     y = random.randint(4, (HEIGHT // GRID_SIZE) - 4) * GRID_SIZE
     print(x, y)
-
-
-    if y >= 140:
-        y = 100
-        print(f"New Value: {y}")
-
-    
-    if x <= 120:
-        x = 100 
-    
-    if x >= 240:
-        x = 100 
-
-
     return x, y
 
 # Directional constants
